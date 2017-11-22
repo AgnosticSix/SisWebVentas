@@ -11,7 +11,8 @@ namespace SisWebVentas.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class USUARIOS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,10 +20,12 @@ namespace SisWebVentas.Models
         {
             this.VENTAS = new HashSet<VENTAS>();
         }
-    
+
         public int CVE_USUARIO { get; set; }
         public string USUARIO { get; set; }
+        [DisplayName("Contraseña")]
         public string CONTRASENA { get; set; }
+        [DisplayName("Activo")]
         public Nullable<bool> ACTIVO { get; set; }
         public Nullable<bool> ADMINISTRADOR { get; set; }
     
