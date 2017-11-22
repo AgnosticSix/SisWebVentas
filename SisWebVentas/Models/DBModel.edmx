@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SisWebVentasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DETALLE_VENTAS">
+          <Key>
+            <PropertyRef Name="FOLIO_VENTA" />
+          </Key>
+          <Property Name="FOLIO_VENTA" Type="int" Nullable="false" />
+          <Property Name="CVE_PRODUCTO" Type="int" />
+          <Property Name="CANTIDAD" Type="money" />
+          <Property Name="PRECIO" Type="money" />
+        </EntityType>
+        <EntityType Name="FACTURAS">
+          <Key>
+            <PropertyRef Name="FOLIO_FACTURA" />
+          </Key>
+          <Property Name="FOLIO_FACTURA" Type="int" Nullable="false" />
+          <Property Name="FECHA" Type="datetime" />
+          <Property Name="SUBTOTAL" Type="money" />
+          <Property Name="IVA" Type="money" />
+          <Property Name="TOTAL" Type="money" />
+          <Property Name="DESCRIPCION" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="MARCAS">
+          <Key>
+            <PropertyRef Name="CVE_MARCA" />
+          </Key>
+          <Property Name="CVE_MARCA" Type="int" Nullable="false" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="50" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="PERSONAS">
+          <Key>
+            <PropertyRef Name="CVE_PERSONA" />
+          </Key>
+          <Property Name="CVE_PERSONA" Type="int" Nullable="false" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="30" />
+          <Property Name="APELLIDO_S" Type="varchar" MaxLength="50" />
+          <Property Name="TELEFONO" Type="varchar" MaxLength="13" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="50" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="PRODUCTOS">
+          <Key>
+            <PropertyRef Name="CVE_PRODUCTO" />
+          </Key>
+          <Property Name="CVE_PRODUCTO" Type="int" Nullable="false" />
+          <Property Name="CVE_MARCA" Type="int" />
+          <Property Name="CVE_TIPO_PRODUCTO" Type="int" />
+          <Property Name="DESCRIPCION" Type="varchar" MaxLength="75" />
+          <Property Name="EXISTENCIA" Type="money" />
+          <Property Name="ACTIVO" Type="bit" />
+          <Property Name="PRECIO" Type="real" />
+          <Property Name="CLAVE" Type="varchar" MaxLength="10" />
+          <Property Name="STOCK_MAXIMO" Type="money" />
+          <Property Name="STOCK_MINIMO" Type="money" />
+        </EntityType>
+        <EntityType Name="TIPO_PRODUCTOS">
+          <Key>
+            <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+          </Key>
+          <Property Name="CVE_TIPO_PRODUCTO" Type="int" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="varchar" MaxLength="100" />
+          <Property Name="NOMBRE_CORTO" Type="varchar" MaxLength="10" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+          <Key>
+            <PropertyRef Name="CVE_USUARIO" />
+          </Key>
+          <Property Name="CVE_USUARIO" Type="int" Nullable="false" />
+          <Property Name="USUARIO" Type="varchar" MaxLength="25" />
+          <Property Name="CONTRASENA" Type="varchar" MaxLength="20" />
+          <Property Name="ACTIVO" Type="bit" />
+          <Property Name="ADMINISTRADOR" Type="bit" />
+        </EntityType>
+        <EntityType Name="VENDEDOR">
+          <Key>
+            <PropertyRef Name="CVE_VENDEDOR" />
+          </Key>
+          <Property Name="CVE_VENDEDOR" Type="int" Nullable="false" />
+          <Property Name="CVE_PERSONA" Type="int" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="VENTAS">
+          <Key>
+            <PropertyRef Name="FOLIO_VENTA" />
+          </Key>
+          <Property Name="FOLIO_VENTA" Type="int" Nullable="false" />
+          <Property Name="FOLIO_FACTURA" Type="int" />
+          <Property Name="CVE_USUARIO" Type="int" />
+          <Property Name="FECHA_VENTA" Type="datetime" />
+          <Property Name="PAGADO" Type="bit" />
+          <Property Name="FECHA_PAGO" Type="datetime" />
+          <Property Name="DEVUELTO" Type="bit" />
+        </EntityType>
+        <Association Name="FK_DETALLE__REFERENCE_PRODUCTO">
+          <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="0..1" />
+          <End Role="DETALLE_VENTAS" Type="Self.DETALLE_VENTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTOS">
+              <PropertyRef Name="CVE_PRODUCTO" />
+            </Principal>
+            <Dependent Role="DETALLE_VENTAS">
+              <PropertyRef Name="CVE_PRODUCTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETALLE__REFERENCE_VENTAS">
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="1" />
+          <End Role="DETALLE_VENTAS" Type="Self.DETALLE_VENTAS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="VENTAS">
+              <PropertyRef Name="FOLIO_VENTA" />
+            </Principal>
+            <Dependent Role="DETALLE_VENTAS">
+              <PropertyRef Name="FOLIO_VENTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_REFERENCE_MARCAS">
+          <End Role="MARCAS" Type="Self.MARCAS" Multiplicity="0..1" />
+          <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MARCAS">
+              <PropertyRef Name="CVE_MARCA" />
+            </Principal>
+            <Dependent Role="PRODUCTOS">
+              <PropertyRef Name="CVE_MARCA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_REFERENCE_TIPO_PRO">
+          <End Role="TIPO_PRODUCTOS" Type="Self.TIPO_PRODUCTOS" Multiplicity="0..1" />
+          <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_PRODUCTOS">
+              <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+            </Principal>
+            <Dependent Role="PRODUCTOS">
+              <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOS_REFERENCE_PERSONAS">
+          <End Role="PERSONAS" Type="Self.PERSONAS" Multiplicity="1" />
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONAS">
+              <PropertyRef Name="CVE_PERSONA" />
+            </Principal>
+            <Dependent Role="USUARIOS">
+              <PropertyRef Name="CVE_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENDEDOR_REFERENCE_PERSONAS">
+          <End Role="PERSONAS" Type="Self.PERSONAS" Multiplicity="1" />
+          <End Role="VENDEDOR" Type="Self.VENDEDOR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONAS">
+              <PropertyRef Name="CVE_PERSONA" />
+            </Principal>
+            <Dependent Role="VENDEDOR">
+              <PropertyRef Name="CVE_VENDEDOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENTAS_REFERENCE_FACTURAS">
+          <End Role="FACTURAS" Type="Self.FACTURAS" Multiplicity="0..1" />
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACTURAS">
+              <PropertyRef Name="FOLIO_FACTURA" />
+            </Principal>
+            <Dependent Role="VENTAS">
+              <PropertyRef Name="FOLIO_FACTURA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENTAS_REFERENCE_USUARIOS">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="0..1" />
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="CVE_USUARIO" />
+            </Principal>
+            <Dependent Role="VENTAS">
+              <PropertyRef Name="CVE_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SisWebVentasModelStoreContainer">
+          <EntitySet Name="DETALLE_VENTAS" EntityType="Self.DETALLE_VENTAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FACTURAS" EntityType="Self.FACTURAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MARCAS" EntityType="Self.MARCAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERSONAS" EntityType="Self.PERSONAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTOS" EntityType="Self.PRODUCTOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPO_PRODUCTOS" EntityType="Self.TIPO_PRODUCTOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VENDEDOR" EntityType="Self.VENDEDOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VENTAS" EntityType="Self.VENTAS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DETALLE__REFERENCE_PRODUCTO" Association="Self.FK_DETALLE__REFERENCE_PRODUCTO">
+            <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+            <End Role="DETALLE_VENTAS" EntitySet="DETALLE_VENTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETALLE__REFERENCE_VENTAS" Association="Self.FK_DETALLE__REFERENCE_VENTAS">
+            <End Role="VENTAS" EntitySet="VENTAS" />
+            <End Role="DETALLE_VENTAS" EntitySet="DETALLE_VENTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_REFERENCE_MARCAS" Association="Self.FK_PRODUCTO_REFERENCE_MARCAS">
+            <End Role="MARCAS" EntitySet="MARCAS" />
+            <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_REFERENCE_TIPO_PRO" Association="Self.FK_PRODUCTO_REFERENCE_TIPO_PRO">
+            <End Role="TIPO_PRODUCTOS" EntitySet="TIPO_PRODUCTOS" />
+            <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOS_REFERENCE_PERSONAS" Association="Self.FK_USUARIOS_REFERENCE_PERSONAS">
+            <End Role="PERSONAS" EntitySet="PERSONAS" />
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENDEDOR_REFERENCE_PERSONAS" Association="Self.FK_VENDEDOR_REFERENCE_PERSONAS">
+            <End Role="PERSONAS" EntitySet="PERSONAS" />
+            <End Role="VENDEDOR" EntitySet="VENDEDOR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENTAS_REFERENCE_FACTURAS" Association="Self.FK_VENTAS_REFERENCE_FACTURAS">
+            <End Role="FACTURAS" EntitySet="FACTURAS" />
+            <End Role="VENTAS" EntitySet="VENTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENTAS_REFERENCE_USUARIOS" Association="Self.FK_VENTAS_REFERENCE_USUARIOS">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="VENTAS" EntitySet="VENTAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SisWebVentasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DETALLE_VENTAS">
+          <Key>
+            <PropertyRef Name="FOLIO_VENTA" />
+          </Key>
+          <Property Name="FOLIO_VENTA" Type="Int32" Nullable="false" />
+          <Property Name="CVE_PRODUCTO" Type="Int32" />
+          <Property Name="CANTIDAD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PRECIO" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="PRODUCTOS" Relationship="Self.FK_DETALLE__REFERENCE_PRODUCTO" FromRole="DETALLE_VENTAS" ToRole="PRODUCTOS" />
+          <NavigationProperty Name="VENTAS" Relationship="Self.FK_DETALLE__REFERENCE_VENTAS" FromRole="DETALLE_VENTAS" ToRole="VENTAS" />
+        </EntityType>
+        <EntityType Name="FACTURAS">
+          <Key>
+            <PropertyRef Name="FOLIO_FACTURA" />
+          </Key>
+          <Property Name="FOLIO_FACTURA" Type="Int32" Nullable="false" />
+          <Property Name="FECHA" Type="DateTime" Precision="3" />
+          <Property Name="SUBTOTAL" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IVA" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TOTAL" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="VENTAS" Relationship="Self.FK_VENTAS_REFERENCE_FACTURAS" FromRole="FACTURAS" ToRole="VENTAS" />
+        </EntityType>
+        <EntityType Name="MARCAS">
+          <Key>
+            <PropertyRef Name="CVE_MARCA" />
+          </Key>
+          <Property Name="CVE_MARCA" Type="Int32" Nullable="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="PRODUCTOS" Relationship="Self.FK_PRODUCTO_REFERENCE_MARCAS" FromRole="MARCAS" ToRole="PRODUCTOS" />
+        </EntityType>
+        <EntityType Name="PERSONAS">
+          <Key>
+            <PropertyRef Name="CVE_PERSONA" />
+          </Key>
+          <Property Name="CVE_PERSONA" Type="Int32" Nullable="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="APELLIDO_S" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TELEFONO" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="USUARIOS" Relationship="Self.FK_USUARIOS_REFERENCE_PERSONAS" FromRole="PERSONAS" ToRole="USUARIOS" />
+          <NavigationProperty Name="VENDEDOR" Relationship="Self.FK_VENDEDOR_REFERENCE_PERSONAS" FromRole="PERSONAS" ToRole="VENDEDOR" />
+        </EntityType>
+        <EntityType Name="PRODUCTOS">
+          <Key>
+            <PropertyRef Name="CVE_PRODUCTO" />
+          </Key>
+          <Property Name="CVE_PRODUCTO" Type="Int32" Nullable="false" />
+          <Property Name="CVE_MARCA" Type="Int32" />
+          <Property Name="CVE_TIPO_PRODUCTO" Type="Int32" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="EXISTENCIA" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <Property Name="PRECIO" Type="Single" />
+          <Property Name="CLAVE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="STOCK_MAXIMO" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="STOCK_MINIMO" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="DETALLE_VENTAS" Relationship="Self.FK_DETALLE__REFERENCE_PRODUCTO" FromRole="PRODUCTOS" ToRole="DETALLE_VENTAS" />
+          <NavigationProperty Name="MARCAS" Relationship="Self.FK_PRODUCTO_REFERENCE_MARCAS" FromRole="PRODUCTOS" ToRole="MARCAS" />
+          <NavigationProperty Name="TIPO_PRODUCTOS" Relationship="Self.FK_PRODUCTO_REFERENCE_TIPO_PRO" FromRole="PRODUCTOS" ToRole="TIPO_PRODUCTOS" />
+        </EntityType>
+        <EntityType Name="TIPO_PRODUCTOS">
+          <Key>
+            <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+          </Key>
+          <Property Name="CVE_TIPO_PRODUCTO" Type="Int32" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOMBRE_CORTO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="PRODUCTOS" Relationship="Self.FK_PRODUCTO_REFERENCE_TIPO_PRO" FromRole="TIPO_PRODUCTOS" ToRole="PRODUCTOS" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+          <Key>
+            <PropertyRef Name="CVE_USUARIO" />
+          </Key>
+          <Property Name="CVE_USUARIO" Type="Int32" Nullable="false" />
+          <Property Name="USUARIO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="CONTRASENA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <Property Name="ADMINISTRADOR" Type="Boolean" />
+          <NavigationProperty Name="PERSONAS" Relationship="Self.FK_USUARIOS_REFERENCE_PERSONAS" FromRole="USUARIOS" ToRole="PERSONAS" />
+          <NavigationProperty Name="VENTAS" Relationship="Self.FK_VENTAS_REFERENCE_USUARIOS" FromRole="USUARIOS" ToRole="VENTAS" />
+        </EntityType>
+        <EntityType Name="VENDEDOR">
+          <Key>
+            <PropertyRef Name="CVE_VENDEDOR" />
+          </Key>
+          <Property Name="CVE_VENDEDOR" Type="Int32" Nullable="false" />
+          <Property Name="CVE_PERSONA" Type="Int32" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="PERSONAS" Relationship="Self.FK_VENDEDOR_REFERENCE_PERSONAS" FromRole="VENDEDOR" ToRole="PERSONAS" />
+        </EntityType>
+        <EntityType Name="VENTAS">
+          <Key>
+            <PropertyRef Name="FOLIO_VENTA" />
+          </Key>
+          <Property Name="FOLIO_VENTA" Type="Int32" Nullable="false" />
+          <Property Name="FOLIO_FACTURA" Type="Int32" />
+          <Property Name="CVE_USUARIO" Type="Int32" />
+          <Property Name="FECHA_VENTA" Type="DateTime" Precision="3" />
+          <Property Name="PAGADO" Type="Boolean" />
+          <Property Name="FECHA_PAGO" Type="DateTime" Precision="3" />
+          <Property Name="DEVUELTO" Type="Boolean" />
+          <NavigationProperty Name="DETALLE_VENTAS" Relationship="Self.FK_DETALLE__REFERENCE_VENTAS" FromRole="VENTAS" ToRole="DETALLE_VENTAS" />
+          <NavigationProperty Name="FACTURAS" Relationship="Self.FK_VENTAS_REFERENCE_FACTURAS" FromRole="VENTAS" ToRole="FACTURAS" />
+          <NavigationProperty Name="USUARIOS" Relationship="Self.FK_VENTAS_REFERENCE_USUARIOS" FromRole="VENTAS" ToRole="USUARIOS" />
+        </EntityType>
+        <Association Name="FK_DETALLE__REFERENCE_PRODUCTO">
+          <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="0..1" />
+          <End Role="DETALLE_VENTAS" Type="Self.DETALLE_VENTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTOS">
+              <PropertyRef Name="CVE_PRODUCTO" />
+            </Principal>
+            <Dependent Role="DETALLE_VENTAS">
+              <PropertyRef Name="CVE_PRODUCTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETALLE__REFERENCE_VENTAS">
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="1" />
+          <End Role="DETALLE_VENTAS" Type="Self.DETALLE_VENTAS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="VENTAS">
+              <PropertyRef Name="FOLIO_VENTA" />
+            </Principal>
+            <Dependent Role="DETALLE_VENTAS">
+              <PropertyRef Name="FOLIO_VENTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENTAS_REFERENCE_FACTURAS">
+          <End Role="FACTURAS" Type="Self.FACTURAS" Multiplicity="0..1" />
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACTURAS">
+              <PropertyRef Name="FOLIO_FACTURA" />
+            </Principal>
+            <Dependent Role="VENTAS">
+              <PropertyRef Name="FOLIO_FACTURA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_REFERENCE_MARCAS">
+          <End Role="MARCAS" Type="Self.MARCAS" Multiplicity="0..1" />
+          <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MARCAS">
+              <PropertyRef Name="CVE_MARCA" />
+            </Principal>
+            <Dependent Role="PRODUCTOS">
+              <PropertyRef Name="CVE_MARCA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOS_REFERENCE_PERSONAS">
+          <End Role="PERSONAS" Type="Self.PERSONAS" Multiplicity="1" />
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONAS">
+              <PropertyRef Name="CVE_PERSONA" />
+            </Principal>
+            <Dependent Role="USUARIOS">
+              <PropertyRef Name="CVE_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENDEDOR_REFERENCE_PERSONAS">
+          <End Role="PERSONAS" Type="Self.PERSONAS" Multiplicity="1" />
+          <End Role="VENDEDOR" Type="Self.VENDEDOR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONAS">
+              <PropertyRef Name="CVE_PERSONA" />
+            </Principal>
+            <Dependent Role="VENDEDOR">
+              <PropertyRef Name="CVE_VENDEDOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_REFERENCE_TIPO_PRO">
+          <End Role="TIPO_PRODUCTOS" Type="Self.TIPO_PRODUCTOS" Multiplicity="0..1" />
+          <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_PRODUCTOS">
+              <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+            </Principal>
+            <Dependent Role="PRODUCTOS">
+              <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VENTAS_REFERENCE_USUARIOS">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="0..1" />
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="CVE_USUARIO" />
+            </Principal>
+            <Dependent Role="VENTAS">
+              <PropertyRef Name="CVE_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SisWebVentasEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DETALLE_VENTAS" EntityType="Self.DETALLE_VENTAS" />
+          <EntitySet Name="FACTURAS" EntityType="Self.FACTURAS" />
+          <EntitySet Name="MARCAS" EntityType="Self.MARCAS" />
+          <EntitySet Name="PERSONAS" EntityType="Self.PERSONAS" />
+          <EntitySet Name="PRODUCTOS" EntityType="Self.PRODUCTOS" />
+          <EntitySet Name="TIPO_PRODUCTOS" EntityType="Self.TIPO_PRODUCTOS" />
+          <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" />
+          <EntitySet Name="VENDEDOR" EntityType="Self.VENDEDOR" />
+          <EntitySet Name="VENTAS" EntityType="Self.VENTAS" />
+          <AssociationSet Name="FK_DETALLE__REFERENCE_PRODUCTO" Association="Self.FK_DETALLE__REFERENCE_PRODUCTO">
+            <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+            <End Role="DETALLE_VENTAS" EntitySet="DETALLE_VENTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETALLE__REFERENCE_VENTAS" Association="Self.FK_DETALLE__REFERENCE_VENTAS">
+            <End Role="VENTAS" EntitySet="VENTAS" />
+            <End Role="DETALLE_VENTAS" EntitySet="DETALLE_VENTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENTAS_REFERENCE_FACTURAS" Association="Self.FK_VENTAS_REFERENCE_FACTURAS">
+            <End Role="FACTURAS" EntitySet="FACTURAS" />
+            <End Role="VENTAS" EntitySet="VENTAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_REFERENCE_MARCAS" Association="Self.FK_PRODUCTO_REFERENCE_MARCAS">
+            <End Role="MARCAS" EntitySet="MARCAS" />
+            <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOS_REFERENCE_PERSONAS" Association="Self.FK_USUARIOS_REFERENCE_PERSONAS">
+            <End Role="PERSONAS" EntitySet="PERSONAS" />
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENDEDOR_REFERENCE_PERSONAS" Association="Self.FK_VENDEDOR_REFERENCE_PERSONAS">
+            <End Role="PERSONAS" EntitySet="PERSONAS" />
+            <End Role="VENDEDOR" EntitySet="VENDEDOR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_REFERENCE_TIPO_PRO" Association="Self.FK_PRODUCTO_REFERENCE_TIPO_PRO">
+            <End Role="TIPO_PRODUCTOS" EntitySet="TIPO_PRODUCTOS" />
+            <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VENTAS_REFERENCE_USUARIOS" Association="Self.FK_VENTAS_REFERENCE_USUARIOS">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="VENTAS" EntitySet="VENTAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SisWebVentasModelStoreContainer" CdmEntityContainer="SisWebVentasEntities1">
+          <EntitySetMapping Name="DETALLE_VENTAS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.DETALLE_VENTAS">
+              <MappingFragment StoreEntitySet="DETALLE_VENTAS">
+                <ScalarProperty Name="FOLIO_VENTA" ColumnName="FOLIO_VENTA" />
+                <ScalarProperty Name="CVE_PRODUCTO" ColumnName="CVE_PRODUCTO" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FACTURAS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.FACTURAS">
+              <MappingFragment StoreEntitySet="FACTURAS">
+                <ScalarProperty Name="FOLIO_FACTURA" ColumnName="FOLIO_FACTURA" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
+                <ScalarProperty Name="IVA" ColumnName="IVA" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MARCAS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.MARCAS">
+              <MappingFragment StoreEntitySet="MARCAS">
+                <ScalarProperty Name="CVE_MARCA" ColumnName="CVE_MARCA" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSONAS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.PERSONAS">
+              <MappingFragment StoreEntitySet="PERSONAS">
+                <ScalarProperty Name="CVE_PERSONA" ColumnName="CVE_PERSONA" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="APELLIDO_S" ColumnName="APELLIDO_S" />
+                <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTOS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.PRODUCTOS">
+              <MappingFragment StoreEntitySet="PRODUCTOS">
+                <ScalarProperty Name="CVE_PRODUCTO" ColumnName="CVE_PRODUCTO" />
+                <ScalarProperty Name="CVE_MARCA" ColumnName="CVE_MARCA" />
+                <ScalarProperty Name="CVE_TIPO_PRODUCTO" ColumnName="CVE_TIPO_PRODUCTO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="EXISTENCIA" ColumnName="EXISTENCIA" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                <ScalarProperty Name="CLAVE" ColumnName="CLAVE" />
+                <ScalarProperty Name="STOCK_MAXIMO" ColumnName="STOCK_MAXIMO" />
+                <ScalarProperty Name="STOCK_MINIMO" ColumnName="STOCK_MINIMO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPO_PRODUCTOS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.TIPO_PRODUCTOS">
+              <MappingFragment StoreEntitySet="TIPO_PRODUCTOS">
+                <ScalarProperty Name="CVE_TIPO_PRODUCTO" ColumnName="CVE_TIPO_PRODUCTO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="NOMBRE_CORTO" ColumnName="NOMBRE_CORTO" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIOS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.USUARIOS">
+              <MappingFragment StoreEntitySet="USUARIOS">
+                <ScalarProperty Name="CVE_USUARIO" ColumnName="CVE_USUARIO" />
+                <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+                <ScalarProperty Name="CONTRASENA" ColumnName="CONTRASENA" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="ADMINISTRADOR" ColumnName="ADMINISTRADOR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VENDEDOR">
+            <EntityTypeMapping TypeName="SisWebVentasModel.VENDEDOR">
+              <MappingFragment StoreEntitySet="VENDEDOR">
+                <ScalarProperty Name="CVE_VENDEDOR" ColumnName="CVE_VENDEDOR" />
+                <ScalarProperty Name="CVE_PERSONA" ColumnName="CVE_PERSONA" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VENTAS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.VENTAS">
+              <MappingFragment StoreEntitySet="VENTAS">
+                <ScalarProperty Name="FOLIO_VENTA" ColumnName="FOLIO_VENTA" />
+                <ScalarProperty Name="FOLIO_FACTURA" ColumnName="FOLIO_FACTURA" />
+                <ScalarProperty Name="CVE_USUARIO" ColumnName="CVE_USUARIO" />
+                <ScalarProperty Name="FECHA_VENTA" ColumnName="FECHA_VENTA" />
+                <ScalarProperty Name="PAGADO" ColumnName="PAGADO" />
+                <ScalarProperty Name="FECHA_PAGO" ColumnName="FECHA_PAGO" />
+                <ScalarProperty Name="DEVUELTO" ColumnName="DEVUELTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

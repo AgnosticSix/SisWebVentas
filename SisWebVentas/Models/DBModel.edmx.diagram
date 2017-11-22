@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="978cc678a4d040dcbdb3060df1432f5b" Name="Diagram1">
+        <EntityTypeShape EntityType="SisWebVentasModel.DETALLE_VENTAS" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.FACTURAS" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.MARCAS" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.PERSONAS" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.PRODUCTOS" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.TIPO_PRODUCTOS" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.USUARIOS" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.VENDEDOR" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.VENTAS" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="SisWebVentasModel.FK_DETALLE__REFERENCE_PRODUCTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_DETALLE__REFERENCE_VENTAS" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_VENTAS_REFERENCE_FACTURAS" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_PRODUCTO_REFERENCE_MARCAS" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_USUARIOS_REFERENCE_PERSONAS" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_VENDEDOR_REFERENCE_PERSONAS" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_PRODUCTO_REFERENCE_TIPO_PRO" ManuallyRouted="false" />
+        <AssociationConnector Association="SisWebVentasModel.FK_VENTAS_REFERENCE_USUARIOS" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
