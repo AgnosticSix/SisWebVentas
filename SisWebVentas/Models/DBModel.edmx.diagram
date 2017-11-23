@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="978cc678a4d040dcbdb3060df1432f5b" Name="Diagram1">
         <EntityTypeShape EntityType="SisWebVentasModel.DETALLE_VENTAS" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SisWebVentasModel.FACTURAS" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SisWebVentasModel.FACTURAS" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SisWebVentasModel.MARCAS" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SisWebVentasModel.PERSONAS" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SisWebVentasModel.PRODUCTOS" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
@@ -22,6 +22,12 @@
         <AssociationConnector Association="SisWebVentasModel.FK_VENDEDOR_REFERENCE_PERSONAS" ManuallyRouted="false" />
         <AssociationConnector Association="SisWebVentasModel.FK_PRODUCTO_REFERENCE_TIPO_PRO" ManuallyRouted="false" />
         <AssociationConnector Association="SisWebVentasModel.FK_VENTAS_REFERENCE_USUARIOS" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SisWebVentasModel.ESTADOS" Width="1.5" PointX="3.125" PointY="6.875" />
+        <EntityTypeShape EntityType="SisWebVentasModel.MUNICIPIOS" Width="1.5" PointX="0.75" PointY="10.5" />
+        <EntityTypeShape EntityType="SisWebVentasModel.SUCURSAL" Width="1.5" PointX="0.625" PointY="6.125" />
+        <AssociationConnector Association="SisWebVentasModel.FK_MUNICIPI_REFERENCE_ESTADOS" />
+        <AssociationConnector Association="SisWebVentasModel.FK_SUCURSAL_REFERENCE_ESTADOS" />
+        <AssociationConnector Association="SisWebVentasModel.FK_PERSONAS_REFERENCE_SUCURSAL" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

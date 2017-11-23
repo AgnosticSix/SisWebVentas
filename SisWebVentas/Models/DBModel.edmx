@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SisWebVentasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SisWebVentasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DETALLE_VENTAS">
           <Key>
             <PropertyRef Name="FOLIO_VENTA" />
@@ -13,6 +13,13 @@
           <Property Name="CVE_PRODUCTO" Type="int" />
           <Property Name="CANTIDAD" Type="money" />
           <Property Name="PRECIO" Type="money" />
+        </EntityType>
+        <EntityType Name="ESTADOS">
+          <Key>
+            <PropertyRef Name="CVE_ESTADO" />
+          </Key>
+          <Property Name="CVE_ESTADO" Type="int" Nullable="false" />
+          <Property Name="ESTADO" Type="varchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="FACTURAS">
           <Key>
@@ -33,6 +40,14 @@
           <Property Name="NOMBRE" Type="varchar" MaxLength="50" />
           <Property Name="ACTIVO" Type="bit" />
         </EntityType>
+        <EntityType Name="MUNICIPIOS">
+          <Key>
+            <PropertyRef Name="CVE_MUNICIPIO" />
+          </Key>
+          <Property Name="CVE_MUNICIPIO" Type="int" Nullable="false" />
+          <Property Name="CVE_ESTADO" Type="int" />
+          <Property Name="MUNICIPIO" Type="varchar" MaxLength="75" />
+        </EntityType>
         <EntityType Name="PERSONAS">
           <Key>
             <PropertyRef Name="CVE_PERSONA" />
@@ -43,6 +58,7 @@
           <Property Name="TELEFONO" Type="varchar" MaxLength="13" />
           <Property Name="EMAIL" Type="varchar" MaxLength="50" />
           <Property Name="ACTIVO" Type="bit" />
+          <Property Name="CVE_SUCURSAL" Type="int" />
         </EntityType>
         <EntityType Name="PRODUCTOS">
           <Key>
@@ -58,6 +74,15 @@
           <Property Name="CLAVE" Type="varchar" MaxLength="10" />
           <Property Name="STOCK_MAXIMO" Type="money" />
           <Property Name="STOCK_MINIMO" Type="money" />
+        </EntityType>
+        <EntityType Name="SUCURSAL">
+          <Key>
+            <PropertyRef Name="CVE_SUCURSAL" />
+          </Key>
+          <Property Name="CVE_SUCURSAL" Type="int" Nullable="false" />
+          <Property Name="CVE_ESTADO" Type="int" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="50" />
+          <Property Name="ACTIVO" Type="bit" />
         </EntityType>
         <EntityType Name="TIPO_PRODUCTOS">
           <Key>
@@ -122,6 +147,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MUNICIPI_REFERENCE_ESTADOS">
+          <End Role="ESTADOS" Type="Self.ESTADOS" Multiplicity="0..1" />
+          <End Role="MUNICIPIOS" Type="Self.MUNICIPIOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADOS">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Principal>
+            <Dependent Role="MUNICIPIOS">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSONAS_REFERENCE_SUCURSAL">
+          <End Role="SUCURSAL" Type="Self.SUCURSAL" Multiplicity="0..1" />
+          <End Role="PERSONAS" Type="Self.PERSONAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUCURSAL">
+              <PropertyRef Name="CVE_SUCURSAL" />
+            </Principal>
+            <Dependent Role="PERSONAS">
+              <PropertyRef Name="CVE_SUCURSAL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PRODUCTO_REFERENCE_MARCAS">
           <End Role="MARCAS" Type="Self.MARCAS" Multiplicity="0..1" />
           <End Role="PRODUCTOS" Type="Self.PRODUCTOS" Multiplicity="*" />
@@ -143,6 +192,18 @@
             </Principal>
             <Dependent Role="PRODUCTOS">
               <PropertyRef Name="CVE_TIPO_PRODUCTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUCURSAL_REFERENCE_ESTADOS">
+          <End Role="ESTADOS" Type="Self.ESTADOS" Multiplicity="0..1" />
+          <End Role="SUCURSAL" Type="Self.SUCURSAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADOS">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Principal>
+            <Dependent Role="SUCURSAL">
+              <PropertyRef Name="CVE_ESTADO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -196,10 +257,13 @@
         </Association>
         <EntityContainer Name="SisWebVentasModelStoreContainer">
           <EntitySet Name="DETALLE_VENTAS" EntityType="Self.DETALLE_VENTAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESTADOS" EntityType="Self.ESTADOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FACTURAS" EntityType="Self.FACTURAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MARCAS" EntityType="Self.MARCAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MUNICIPIOS" EntityType="Self.MUNICIPIOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERSONAS" EntityType="Self.PERSONAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUCTOS" EntityType="Self.PRODUCTOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUCURSAL" EntityType="Self.SUCURSAL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIPO_PRODUCTOS" EntityType="Self.TIPO_PRODUCTOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VENDEDOR" EntityType="Self.VENDEDOR" Schema="dbo" store:Type="Tables" />
@@ -212,6 +276,14 @@
             <End Role="VENTAS" EntitySet="VENTAS" />
             <End Role="DETALLE_VENTAS" EntitySet="DETALLE_VENTAS" />
           </AssociationSet>
+          <AssociationSet Name="FK_MUNICIPI_REFERENCE_ESTADOS" Association="Self.FK_MUNICIPI_REFERENCE_ESTADOS">
+            <End Role="ESTADOS" EntitySet="ESTADOS" />
+            <End Role="MUNICIPIOS" EntitySet="MUNICIPIOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSONAS_REFERENCE_SUCURSAL" Association="Self.FK_PERSONAS_REFERENCE_SUCURSAL">
+            <End Role="SUCURSAL" EntitySet="SUCURSAL" />
+            <End Role="PERSONAS" EntitySet="PERSONAS" />
+          </AssociationSet>
           <AssociationSet Name="FK_PRODUCTO_REFERENCE_MARCAS" Association="Self.FK_PRODUCTO_REFERENCE_MARCAS">
             <End Role="MARCAS" EntitySet="MARCAS" />
             <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
@@ -219,6 +291,10 @@
           <AssociationSet Name="FK_PRODUCTO_REFERENCE_TIPO_PRO" Association="Self.FK_PRODUCTO_REFERENCE_TIPO_PRO">
             <End Role="TIPO_PRODUCTOS" EntitySet="TIPO_PRODUCTOS" />
             <End Role="PRODUCTOS" EntitySet="PRODUCTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUCURSAL_REFERENCE_ESTADOS" Association="Self.FK_SUCURSAL_REFERENCE_ESTADOS">
+            <End Role="ESTADOS" EntitySet="ESTADOS" />
+            <End Role="SUCURSAL" EntitySet="SUCURSAL" />
           </AssociationSet>
           <AssociationSet Name="FK_USUARIOS_REFERENCE_PERSONAS" Association="Self.FK_USUARIOS_REFERENCE_PERSONAS">
             <End Role="PERSONAS" EntitySet="PERSONAS" />
@@ -237,8 +313,7 @@
             <End Role="VENTAS" EntitySet="VENTAS" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SisWebVentasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -286,6 +361,8 @@
           <Property Name="ACTIVO" Type="Boolean" />
           <NavigationProperty Name="USUARIOS" Relationship="Self.FK_USUARIOS_REFERENCE_PERSONAS" FromRole="PERSONAS" ToRole="USUARIOS" />
           <NavigationProperty Name="VENDEDOR" Relationship="Self.FK_VENDEDOR_REFERENCE_PERSONAS" FromRole="PERSONAS" ToRole="VENDEDOR" />
+          <Property Name="CVE_SUCURSAL" Type="Int32" />
+          <NavigationProperty Name="SUCURSAL" Relationship="SisWebVentasModel.FK_PERSONAS_REFERENCE_SUCURSAL" FromRole="PERSONAS" ToRole="SUCURSAL" />
         </EntityType>
         <EntityType Name="PRODUCTOS">
           <Key>
@@ -489,7 +566,87 @@
             <End Role="USUARIOS" EntitySet="USUARIOS" />
             <End Role="VENTAS" EntitySet="VENTAS" />
           </AssociationSet>
+          <EntitySet Name="ESTADOS" EntityType="SisWebVentasModel.ESTADOS" />
+          <EntitySet Name="MUNICIPIOS" EntityType="SisWebVentasModel.MUNICIPIOS" />
+          <EntitySet Name="SUCURSAL" EntityType="SisWebVentasModel.SUCURSAL" />
+          <AssociationSet Name="FK_MUNICIPI_REFERENCE_ESTADOS" Association="SisWebVentasModel.FK_MUNICIPI_REFERENCE_ESTADOS">
+            <End Role="ESTADOS" EntitySet="ESTADOS" />
+            <End Role="MUNICIPIOS" EntitySet="MUNICIPIOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUCURSAL_REFERENCE_ESTADOS" Association="SisWebVentasModel.FK_SUCURSAL_REFERENCE_ESTADOS">
+            <End Role="ESTADOS" EntitySet="ESTADOS" />
+            <End Role="SUCURSAL" EntitySet="SUCURSAL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSONAS_REFERENCE_SUCURSAL" Association="SisWebVentasModel.FK_PERSONAS_REFERENCE_SUCURSAL">
+            <End Role="SUCURSAL" EntitySet="SUCURSAL" />
+            <End Role="PERSONAS" EntitySet="PERSONAS" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ESTADOS">
+          <Key>
+            <PropertyRef Name="CVE_ESTADO" />
+          </Key>
+          <Property Name="CVE_ESTADO" Type="Int32" Nullable="false" />
+          <Property Name="ESTADO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MUNICIPIOS" Relationship="SisWebVentasModel.FK_MUNICIPI_REFERENCE_ESTADOS" FromRole="ESTADOS" ToRole="MUNICIPIOS" />
+          <NavigationProperty Name="SUCURSAL" Relationship="SisWebVentasModel.FK_SUCURSAL_REFERENCE_ESTADOS" FromRole="ESTADOS" ToRole="SUCURSAL" />
+        </EntityType>
+        <EntityType Name="MUNICIPIOS">
+          <Key>
+            <PropertyRef Name="CVE_MUNICIPIO" />
+          </Key>
+          <Property Name="CVE_MUNICIPIO" Type="Int32" Nullable="false" />
+          <Property Name="CVE_ESTADO" Type="Int32" />
+          <Property Name="MUNICIPIO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ESTADOS" Relationship="SisWebVentasModel.FK_MUNICIPI_REFERENCE_ESTADOS" FromRole="MUNICIPIOS" ToRole="ESTADOS" />
+        </EntityType>
+        <EntityType Name="SUCURSAL">
+          <Key>
+            <PropertyRef Name="CVE_SUCURSAL" />
+          </Key>
+          <Property Name="CVE_SUCURSAL" Type="Int32" Nullable="false" />
+          <Property Name="CVE_ESTADO" Type="Int32" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="ESTADOS" Relationship="SisWebVentasModel.FK_SUCURSAL_REFERENCE_ESTADOS" FromRole="SUCURSAL" ToRole="ESTADOS" />
+          <NavigationProperty Name="PERSONAS" Relationship="SisWebVentasModel.FK_PERSONAS_REFERENCE_SUCURSAL" FromRole="SUCURSAL" ToRole="PERSONAS" />
+        </EntityType>
+        <Association Name="FK_MUNICIPI_REFERENCE_ESTADOS">
+          <End Type="SisWebVentasModel.ESTADOS" Role="ESTADOS" Multiplicity="0..1" />
+          <End Type="SisWebVentasModel.MUNICIPIOS" Role="MUNICIPIOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADOS">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Principal>
+            <Dependent Role="MUNICIPIOS">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUCURSAL_REFERENCE_ESTADOS">
+          <End Type="SisWebVentasModel.ESTADOS" Role="ESTADOS" Multiplicity="0..1" />
+          <End Type="SisWebVentasModel.SUCURSAL" Role="SUCURSAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADOS">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Principal>
+            <Dependent Role="SUCURSAL">
+              <PropertyRef Name="CVE_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSONAS_REFERENCE_SUCURSAL">
+          <End Type="SisWebVentasModel.SUCURSAL" Role="SUCURSAL" Multiplicity="0..1" />
+          <End Type="SisWebVentasModel.PERSONAS" Role="PERSONAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUCURSAL">
+              <PropertyRef Name="CVE_SUCURSAL" />
+            </Principal>
+            <Dependent Role="PERSONAS">
+              <PropertyRef Name="CVE_SUCURSAL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -530,6 +687,7 @@
           <EntitySetMapping Name="PERSONAS">
             <EntityTypeMapping TypeName="SisWebVentasModel.PERSONAS">
               <MappingFragment StoreEntitySet="PERSONAS">
+                <ScalarProperty Name="CVE_SUCURSAL" ColumnName="CVE_SUCURSAL" />
                 <ScalarProperty Name="CVE_PERSONA" ColumnName="CVE_PERSONA" />
                 <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
                 <ScalarProperty Name="APELLIDO_S" ColumnName="APELLIDO_S" />
@@ -595,6 +753,33 @@
                 <ScalarProperty Name="PAGADO" ColumnName="PAGADO" />
                 <ScalarProperty Name="FECHA_PAGO" ColumnName="FECHA_PAGO" />
                 <ScalarProperty Name="DEVUELTO" ColumnName="DEVUELTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESTADOS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.ESTADOS">
+              <MappingFragment StoreEntitySet="ESTADOS">
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="CVE_ESTADO" ColumnName="CVE_ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MUNICIPIOS">
+            <EntityTypeMapping TypeName="SisWebVentasModel.MUNICIPIOS">
+              <MappingFragment StoreEntitySet="MUNICIPIOS">
+                <ScalarProperty Name="MUNICIPIO" ColumnName="MUNICIPIO" />
+                <ScalarProperty Name="CVE_ESTADO" ColumnName="CVE_ESTADO" />
+                <ScalarProperty Name="CVE_MUNICIPIO" ColumnName="CVE_MUNICIPIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUCURSAL">
+            <EntityTypeMapping TypeName="SisWebVentasModel.SUCURSAL">
+              <MappingFragment StoreEntitySet="SUCURSAL">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="CVE_ESTADO" ColumnName="CVE_ESTADO" />
+                <ScalarProperty Name="CVE_SUCURSAL" ColumnName="CVE_SUCURSAL" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

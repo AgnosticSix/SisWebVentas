@@ -34,5 +34,8 @@ namespace SisWebVentas.Models
         public virtual DbSet<USUARIOS> USUARIOS { get; set; }
         public virtual DbSet<VENDEDOR> VENDEDOR { get; set; }
         public virtual DbSet<VENTAS> VENTAS { get; set; }
+        public virtual DbSet<ESTADOS> ESTADOS { get; set; }
+        public virtual DbSet<MUNICIPIOS> MUNICIPIOS { get; set; }
+        public virtual DbSet<SUCURSAL> SUCURSAL { get; set; }
     }
 }

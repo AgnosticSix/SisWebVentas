@@ -12,22 +12,21 @@ namespace SisWebVentas.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class USUARIOS
+    public partial class ESTADOS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public USUARIOS()
+        public ESTADOS()
         {
-            this.VENTAS = new HashSet<VENTAS>();
+            this.MUNICIPIOS = new HashSet<MUNICIPIOS>();
+            this.SUCURSAL = new HashSet<SUCURSAL>();
         }
     
-        public int CVE_USUARIO { get; set; }
-        public string USUARIO { get; set; }
-        public string CONTRASENA { get; set; }
-        public Nullable<bool> ACTIVO { get; set; }
-        public Nullable<bool> ADMINISTRADOR { get; set; }
+        public int CVE_ESTADO { get; set; }
+        public string ESTADO { get; set; }
     
-        public virtual PERSONAS PERSONAS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VENTAS> VENTAS { get; set; }
+        public virtual ICollection<MUNICIPIOS> MUNICIPIOS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SUCURSAL> SUCURSAL { get; set; }
     }
 }
