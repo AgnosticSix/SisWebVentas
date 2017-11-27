@@ -9,7 +9,7 @@ namespace SisWebVentas.Controllers
     public class PersonasController : Controller
     {
         // GET: Personas
-        public ActionResult AddOrEdit(int id = 0)
+        public ActionResult Crear(int id = 0)
         {
             PERSONAS personasModel = new PERSONAS();
             return View(personasModel);

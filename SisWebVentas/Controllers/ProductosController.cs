@@ -9,7 +9,7 @@ namespace SisWebVentas.Controllers
     public class ProductosController : Controller
     {
         // GET: Productos
-        public ActionResult AddOrEdit(int id = 0)
+        public ActionResult Crear (int id = 0)
         {
             PRODUCTOS productosModel = new PRODUCTOS();
             return View(productosModel);

@@ -10,7 +10,7 @@ namespace SisWebVentas.Controllers
     public class UsuariosController : Controller
     {
         // GET: Usuarios
-        public ActionResult AddOrEdit(int id = 0)
+        public ActionResult Crear(int id = 0)
         {
             USUARIOS usuariosModel = new USUARIOS();
             return View(usuariosModel);

@@ -136,9 +136,9 @@
     <Content Include="Models\DBModel.edmx.diagram">
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Usuarios\AddOrEdit.cshtml" />
-    <Content Include="Views\Personas\AddOrEdit.cshtml" />
-    <Content Include="Views\Productos\AddOrEdit.cshtml" />
+    <Content Include="Views\Usuarios\Crear.cshtml" />
+    <Content Include="Views\Personas\Crear.cshtml" />
+    <Content Include="Views\Productos\Crear.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
