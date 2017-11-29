@@ -1,6 +1,10 @@
 ﻿@{
     ViewBag.Title = "Index";
     ViewBag.Description = "Home Page";
+    if(Session["cve_usuario"] == null)
+    {
+        Response.Redirect("~/Login/Login");
+    }
 }
 
 <div class="row">

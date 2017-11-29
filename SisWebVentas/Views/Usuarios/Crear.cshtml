@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "AddOrEdit";
+    if (Session["cve_usuario"] == null)
+    {
+        Response.Redirect("~/Login/Login");
+    }
 }
 
 <h2>Crear</h2>

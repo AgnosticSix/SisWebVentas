@@ -11,7 +11,9 @@ namespace SisWebVentas.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class USUARIOS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +23,12 @@ namespace SisWebVentas.Models
         }
     
         public int CVE_USUARIO { get; set; }
+        [DisplayName("Nombre de Usuario")]
+        [Required(ErrorMessage = "Este campo es obligatorio")]
         public string USUARIO { get; set; }
+        [DisplayName("Contraseña")]
+        [Required(ErrorMessage = "Este campo es obligatorio")]
+        [DataType(DataType.Password)]
         public string CONTRASENA { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
         public Nullable<bool> ADMINISTRADOR { get; set; }
@@ -29,5 +36,6 @@ namespace SisWebVentas.Models
         public virtual PERSONAS PERSONAS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VENTAS> VENTAS { get; set; }
+        public string LoginErrorMessage { get; internal set; }
     }
 }
